@@ -1,38 +1,23 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import { HotelProvider } from "@/context/HotelContext";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { HOTEL_INFO } from "@/lib/data";
+
+import { prisma } from "@/lib/Prismadb";
 import "./globals.css";
+import { Navbar } from "@/components/layout/Navbar";
+import { Providers } from "@/context/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // 1. Fetch data on the server (Fast & SEO friendly)
+  const initialRooms = await prisma.room.findMany({
+    where: { status: "AVAILABLE" },
+  });
 
-export const metadata: Metadata = {
-  title: {
-    default: `${HOTEL_INFO.name} — Luxury Hotel Booking`,
-    template: `%s | ${HOTEL_INFO.name}`,
-  },
-  description:
-    "Experience world-class hospitality at Grand Horizon Hotel. Book luxury rooms, suites, and penthouses with stunning ocean views.",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
   return (
-    <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-50 text-navy-900">
-        <HotelProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </HotelProvider>
+    <html lang="en" className="dark">
+      <body className="bg-black text-stone-200 antialiased">
+        {/* 2. Wrap everything in the unified Providers */}
+        <Providers initialRooms={initialRooms}>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
