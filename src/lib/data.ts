@@ -1,0 +1,258 @@
+import type { Booking, Guest, Room } from "./types";
+
+export const HOTEL_INFO = {
+  name: "Grand Horizon Hotel",
+  tagline: "Where Luxury Meets Comfort",
+  address: "123 Ocean Boulevard, Miami Beach, FL 33139",
+  phone: "+1 (305) 555-0199",
+  email: "reservations@grandhorizon.com",
+  rating: 4.9,
+  reviewCount: 2847,
+};
+
+export const AMENITIES = [
+  { icon: "wifi", label: "High-Speed WiFi" },
+  { icon: "pool", label: "Infinity Pool" },
+  { icon: "spa", label: "Luxury Spa" },
+  { icon: "dining", label: "Fine Dining" },
+  { icon: "gym", label: "Fitness Center" },
+  { icon: "parking", label: "Valet Parking" },
+  { icon: "concierge", label: "24/7 Concierge" },
+  { icon: "bar", label: "Rooftop Bar" },
+];
+
+export const initialRooms: Room[] = [
+  {
+    id: "room_001",
+    name: "Ocean View Standard",
+    type: "standard",
+    description:
+      "Elegant standard room with partial ocean views, featuring a king bed, marble bathroom, and modern amenities for a comfortable stay.",
+    price: 189,
+    capacity: 2,
+    size: 32,
+    floor: 3,
+    amenities: ["King Bed", "Ocean View", "Mini Bar", "Smart TV", "Rain Shower"],
+    images: [
+      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80",
+    ],
+    status: "available",
+    rating: 4.7,
+    reviewCount: 342,
+  },
+  {
+    id: "room_002",
+    name: "Garden Deluxe",
+    type: "deluxe",
+    description:
+      "Spacious deluxe room overlooking our tropical gardens with a sitting area, premium linens, and complimentary breakfast.",
+    price: 279,
+    capacity: 2,
+    size: 45,
+    floor: 5,
+    amenities: ["King Bed", "Garden View", "Sitting Area", "Nespresso", "Bathtub", "Breakfast"],
+    images: [
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80",
+      "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80",
+    ],
+    status: "available",
+    rating: 4.8,
+    reviewCount: 218,
+  },
+  {
+    id: "room_003",
+    name: "Executive Suite",
+    type: "suite",
+    description:
+      "Sophisticated suite with separate living room, dining area, and panoramic city views. Perfect for business travelers and extended stays.",
+    price: 449,
+    capacity: 3,
+    size: 68,
+    floor: 12,
+    amenities: ["King Bed", "Living Room", "City View", "Work Desk", "Kitchenette", "Butler Service"],
+    images: [
+      "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=80",
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80",
+    ],
+    status: "occupied",
+    rating: 4.9,
+    reviewCount: 156,
+  },
+  {
+    id: "room_004",
+    name: "Presidential Penthouse",
+    type: "presidential",
+    description:
+      "Our crown jewel — a two-story penthouse with private terrace, infinity plunge pool, personal chef, and 360° ocean views.",
+    price: 1299,
+    capacity: 4,
+    size: 180,
+    floor: 20,
+    amenities: ["Master Suite", "Private Pool", "Terrace", "Private Chef", "Limousine", "Spa Access"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+    ],
+    status: "available",
+    rating: 5.0,
+    reviewCount: 89,
+  },
+  {
+    id: "room_005",
+    name: "Family Deluxe",
+    type: "deluxe",
+    description:
+      "Perfect for families with connecting rooms, two queen beds, kid-friendly amenities, and easy pool access.",
+    price: 329,
+    capacity: 4,
+    size: 52,
+    floor: 4,
+    amenities: ["Two Queen Beds", "Connecting Room", "Pool Access", "Kids Amenities", "Mini Fridge"],
+    images: [
+      "https://images.unsplash.com/photo-1590071247000-24a0b44543a5?w=800&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800&q=80",
+    ],
+    status: "available",
+    rating: 4.6,
+    reviewCount: 203,
+  },
+  {
+    id: "room_006",
+    name: "Spa Suite",
+    type: "suite",
+    description:
+      "Wellness-focused suite with in-room spa bath, aromatherapy, yoga mat, and complimentary spa treatment credits.",
+    price: 549,
+    capacity: 2,
+    size: 72,
+    floor: 8,
+    amenities: ["Spa Bath", "Aromatherapy", "Yoga Mat", "Spa Credits", "Balcony", "Sound System"],
+    images: [
+      "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+    ],
+    status: "cleaning",
+    rating: 4.9,
+    reviewCount: 127,
+  },
+];
+
+export const initialGuests: Guest[] = [
+  {
+    id: "guest_001",
+    firstName: "Sarah",
+    lastName: "Johnson",
+    email: "sarah.johnson@email.com",
+    phone: "+1 (555) 234-5678",
+    nationality: "USA",
+    loyaltyTier: "gold",
+    totalStays: 12,
+    createdAt: "2024-03-15T10:00:00Z",
+  },
+  {
+    id: "guest_002",
+    firstName: "Michael",
+    lastName: "Chen",
+    email: "michael.chen@email.com",
+    phone: "+1 (555) 345-6789",
+    nationality: "Canada",
+    loyaltyTier: "platinum",
+    totalStays: 28,
+    createdAt: "2023-08-22T14:30:00Z",
+  },
+  {
+    id: "guest_003",
+    firstName: "Emma",
+    lastName: "Williams",
+    email: "emma.williams@email.com",
+    phone: "+44 7700 900123",
+    nationality: "UK",
+    loyaltyTier: "silver",
+    totalStays: 5,
+    createdAt: "2025-01-10T09:15:00Z",
+  },
+  {
+    id: "guest_004",
+    firstName: "James",
+    lastName: "Rodriguez",
+    email: "james.r@email.com",
+    phone: "+1 (555) 456-7890",
+    nationality: "USA",
+    loyaltyTier: "bronze",
+    totalStays: 2,
+    createdAt: "2025-06-01T16:45:00Z",
+  },
+];
+
+const today = new Date();
+const formatDate = (daysFromNow: number) => {
+  const d = new Date(today);
+  d.setDate(d.getDate() + daysFromNow);
+  return d.toISOString().split("T")[0];
+};
+
+export const initialBookings: Booking[] = [
+  {
+    id: "booking_001",
+    roomId: "room_003",
+    guestId: "guest_002",
+    checkIn: formatDate(-2),
+    checkOut: formatDate(3),
+    guests: 2,
+    status: "checked-in",
+    paymentStatus: "paid",
+    totalAmount: 2245,
+    createdAt: "2025-06-20T11:00:00Z",
+  },
+  {
+    id: "booking_002",
+    roomId: "room_001",
+    guestId: "guest_001",
+    checkIn: formatDate(5),
+    checkOut: formatDate(8),
+    guests: 2,
+    status: "confirmed",
+    paymentStatus: "paid",
+    totalAmount: 567,
+    specialRequests: "Late check-in around 10 PM",
+    createdAt: "2025-06-25T09:30:00Z",
+  },
+  {
+    id: "booking_003",
+    roomId: "room_004",
+    guestId: "guest_003",
+    checkIn: formatDate(10),
+    checkOut: formatDate(14),
+    guests: 4,
+    status: "confirmed",
+    paymentStatus: "paid",
+    totalAmount: 5196,
+    specialRequests: "Champagne on arrival, anniversary celebration",
+    createdAt: "2025-06-28T15:00:00Z",
+  },
+  {
+    id: "booking_004",
+    roomId: "room_002",
+    guestId: "guest_004",
+    checkIn: formatDate(1),
+    checkOut: formatDate(4),
+    guests: 2,
+    status: "pending",
+    paymentStatus: "pending",
+    totalAmount: 837,
+    createdAt: "2025-06-30T08:00:00Z",
+  },
+  {
+    id: "booking_005",
+    roomId: "room_005",
+    guestId: "guest_001",
+    checkIn: formatDate(-10),
+    checkOut: formatDate(-7),
+    guests: 3,
+    status: "checked-out",
+    paymentStatus: "paid",
+    totalAmount: 987,
+    createdAt: "2025-06-10T12:00:00Z",
+  },
+];
