@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- AUTHENTICATION (NextAuth.js v5 Standard) ---
+
+model Account {
+  id                             String  @id @default(cuid())
+  userId                         String
+  type                           String
+  provider                       String
+  providerAccountId              String
+  refresh_token                  String? @db.Text
+  access_token                   String? @db.Text
+  expires_at                     Int?
+  token_type                     String?
+  scope                          String?
+  id_token                       String? @db.Text
+  session_state                  String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id                            String   @id @default(cuid())
+  sessionToken                  String   @unique
+  userId                        String
+  expires                       DateTime
+  user                          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                           String    @id @default(cuid())
+  name                         String?
+  email                        String?   @unique
+  emailVerified                DateTime?
+  image                        String?
+  role                         UserRole  @default(GUEST)
+  accounts                     Account[]
+  sessions                     Session[]
+  bookings                     Booking[]
+  reviews                      Review[]
+}
+
+enum UserRole {
+  GUEST
+  STAFF
+  ADMIN
+}
+
+// --- HOTEL CORE LOGIC ---
+
+model Room {
+  id                           String   @id @default(cuid())
+  roomNumber                   String   @unique
+  slug                         String   @unique // For QR code URLs: hotel.com/book/room-101
+  type                         RoomType
+  pricePerNight                Float
+  capacity                     Int
+  description                  String   @db.Text
+  images                       String[] // Array of URLs
+  amenities                    String[]
+  status                       RoomStatus @default(AVAILABLE)
+  
+  // QR metadata for physical room scanning
+  qrCodeVersion Int      @default(1) 
+  
+  bookings                    Booking[]
+  reviews                     Review[] 
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+}
+
+enum RoomType {
+  DELUXE
+  SUITE
+  PENTHOUSE
+  PRESIDENTIAL
+}
+
+enum RoomStatus {
+  AVAILABLE
+  BOOKED
+  MAINTENANCE
+  CLEANING
+}
+
+model Booking {
+  id                             String        @id @default(cuid())
+  userId                         String
+  roomId                         String
+  checkIn                        DateTime
+  checkOut                       DateTime
+  totalPrice                     Float
+  status                         BookingStatus @default(PENDING)
+  
+  // Payment & Receipt Tracking
+  paymentIntentId                String?       @unique // Stripe Reference
+  receiptUrl                     String?       // URL to PDF stored in S3/Uploadthing
+  
+  // Real-time Stay Management
+  actualCheckIn                  DateTime?     // When they actually scanned the QR to enter
+  actualCheckOut                 DateTime?
+  digitalKey                     String?       @unique // For smart-lock integration
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([roomId])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  ACTIVE    // Guest is currently in the room
+  CANCELLED
+  COMPLETED
+}
+
+model Review {
+  id                               String   @id @default(cuid())
+  rating                           Int
+  comment                          String   @db.Text
+  userId                           String
+  roomId                           String
+  user                             User     @relation(fields: [userId], references: [id])
+  room                             Room     @relation(fields: [roomId], references: [id])
+  createdAt                        DateTime @default(now())
+}
+
+model VerificationToken {
+  identifier                       String
+  token                            String   @unique
+  expires                          DateTime
+
+  @@unique([identifier, token])
+}
