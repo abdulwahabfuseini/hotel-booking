@@ -20,7 +20,7 @@ export async function PATCH(
     data: { rating, comment },
   });
 
-  return NextResponse.json(updatedReview);
+  return NextResponse.json({ data: updatedReview, message: "Review updated successfully" });
 }
 
 export async function DELETE(

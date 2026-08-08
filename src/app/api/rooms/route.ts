@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       where: { status: "AVAILABLE" },
       orderBy: { createdAt: 'desc' }
     });
-    return NextResponse.json(rooms);
+    return NextResponse.json({data: rooms, count: rooms.length, message: "Fetched all available rooms successfully"});
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch rooms" }, { status: 500 });
   }
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json(newRoom, { status: 201 });
+    return NextResponse.json({ message: "Room created successfully", data: newRoom }, { status: 201 });
   } catch (error: any) {
     console.error("ROOM_POST_ERROR", error);
     return NextResponse.json({ error: error.message || "Failed to create room" }, { status: 500 });

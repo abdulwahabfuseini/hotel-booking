@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         roomId,
       },
     });
-    return NextResponse.json(review);
+    return NextResponse.json({ data: review, message: "Review created successfully" });
   } catch (error) {
     return NextResponse.json({ error: "Review creation failed" }, { status: 500 });
   }

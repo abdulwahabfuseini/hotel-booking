@@ -12,7 +12,7 @@ export async function GET(
     where: { id },
     include: { reviews: true, bookings: true },
   });
-  return NextResponse.json(room);
+  return NextResponse.json({ data: room, message: "Fetched room details successfully" });
 }
 
 // PATCH: Update Room details (Admin Only)
@@ -32,7 +32,7 @@ export async function PATCH(
     data: { ...body },
   });
 
-  return NextResponse.json(updatedRoom);
+  return NextResponse.json({ data: updatedRoom, message: "Room updated successfully" });
 }
 
 // DELETE: Delete a specific room
